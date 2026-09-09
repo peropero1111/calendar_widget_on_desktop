@@ -3,15 +3,20 @@
 ### 이 google_calendar_on_desktop 은 codex 의 도움이 들어갔습니다.  
 </br>
 
-다운로드 하신 후에는 [해당 사이트](https://google-calendar-on-desktop.netlify.app/)를 참고 하시면 더욱 자세한 기능을 확인 할 수 있습니다.
-</br>
-</br>
+
 [exe 파일링크](https://drive.google.com/drive/folders/1IbY2NH5m0-zS1GZNa5uw_mFJOuiKGH03?usp=sharing) 로 실행할때의 사용법은 글 하단에 있습니다.
 </br>
 </br>
 사용하시기전에 다음 절차를 따라 주십시오.
 </br>
 아래에 더욱 쉬운 이해를 위한 이미지가 있습니다. 
+
+### 목차
+[1. 설치](#1-설치)  
+[2. Google Calendar 연결](#2-google-calendar-연결)    
+[3. 작업스케쥴러 등록 (선택사항) (py 버젼)](#3-작업스케쥴러-등록-선택사항-py-버젼)  
+[4. 작업스케쥴러 등록 (선택사항) (exe 버젼)](#4-작업스케쥴러-등록-선택사항-exe-버젼)  
+[5. 기능 소개](#5-기능-소개)
 
 ## 1. 설치
 &nbsp;&nbsp;&nbsp;&nbsp;1.1 적당한 폴더에 google_calendar_on_desktop 속 내용물을 다운 받아 주십시오.
@@ -122,3 +127,24 @@ python -m pip install winotify
 <br>
 </br>
 
+
+## 5. 기능 소개
+
+&nbsp;&nbsp;&nbsp;&nbsp;5.1 만약 일주일이내에 google calendar 에 등록된 일정이 있다면 그 일정은 붉게 표시 됩니다.
+
+&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/peropero1111/google_calendar_on_desktop/blob/main/img/site/2026-07-11%20143401.png?raw=true" width="450" height="450"/>  
+</br>
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;5.2 당일 일정이 30분 이내로 남았을 경우 우측 하단에 토스트 알립을 보내 줍니다.
+
+&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/peropero1111/google_calendar_on_desktop/blob/main/img/site/2026-07-11%20112150.png?raw=true" width="450" height="450"/> 
+</br>
+</br>
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;5.3 우상단의 <code>선택</code>를 누르고 민감한 일정을 고른 후 완료를 누르면 그 일정이 해제 하기 전까지 숨김처리 됩니다.
+
+&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/peropero1111/google_calendar_on_desktop/blob/main/img/2026-07-03%20181439.png?raw=true" width="350" height="350"/><img src="https://github.com/peropero1111/google_calendar_on_desktop/blob/main/img/2026-07-03%20181439.png?raw=true" width="350" height="350"/> 
+</br>
+</br>
