@@ -145,6 +145,6 @@ python -m pip install winotify
 
 &nbsp;&nbsp;&nbsp;&nbsp;5.3 우상단의 <code>선택</code>를 누르고 민감한 일정을 고른 후 완료를 누르면 그 일정이 해제 하기 전까지 숨김처리 됩니다.
 
-&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/peropero1111/google_calendar_on_desktop/blob/main/img/2026-07-03%20181439.png?raw=true" width="350" height="350"/><img src="https://github.com/peropero1111/google_calendar_on_desktop/blob/main/img/2026-07-03%20181439.png?raw=true" width="350" height="350"/> 
+&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/peropero1111/google_calendar_on_desktop/blob/main/img/2026-07-03%20181439.png?raw=true" width="350" height="350"/><img src="https://github.com/peropero1111/google_calendar_on_desktop/blob/main/img/2026-07-03%20181643.png?raw=true" width="350" height="350"/> 
 </br>
 </br>
