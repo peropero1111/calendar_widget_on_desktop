@@ -120,7 +120,7 @@ python -m pip install winotify
 
 
 &nbsp;&nbsp;&nbsp;&nbsp;4.7 `프로그램`에 exe 파일의 경로를 입력하여 주십시오. 
-</br>&nbsp;&nbsp;&nbsp;&nbsp;4.8 `인수 추가` 에 다음과 같이 입력하여 주십시오 `"C:\Users\~ calendar_widget_on_desktop.exe 를 놓은 폴더 경로 주소 ~ \google_calendar_on_desktop.exe"`
+</br>&nbsp;&nbsp;&nbsp;&nbsp;4.8 `인수 추가` 에 다음과 같이 입력하여 주십시오 `"C:\Users\~ calendar_widget_on_desktop.exe 를 놓은 폴더 경로 주소 ~ \calendar_widget_on_desktop.exe"`
 </br>&nbsp;&nbsp;&nbsp;&nbsp;4.9 `시작 위치` 에 다음과 같이 입력하여 주십시오  `C:\Users\~ calendar_widget_on_desktop.exe 를 놓은 폴더 경로 주소 ~`
 
 &nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/peropero1111/google_calendar_on_desktop/blob/main/img/2026-06-30%20224842.png" width="450" height="450"/> 
