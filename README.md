@@ -1,6 +1,6 @@
-# google_calendar_on_desktop
+# calendar_widget_on_desktop
 
-### 이 google_calendar_on_desktop 은 codex 의 도움이 들어갔습니다.  
+### 이 calendar_widget_on_desktop 은 codex 의 도움이 들어갔습니다.  
 </br>
 
 
@@ -19,10 +19,10 @@
 [5. 기능 소개](#5-기능-소개)
 
 ## 1. 설치
-&nbsp;&nbsp;&nbsp;&nbsp;1.1 적당한 폴더에 google_calendar_on_desktop 속 내용물을 다운 받아 주십시오.
+&nbsp;&nbsp;&nbsp;&nbsp;1.1 적당한 폴더에 calendar_widget_on_desktop 속 내용물을 다운 받아 주십시오.
 
 
-&nbsp;&nbsp;&nbsp;&nbsp;1.2 google_calendar_on_desktop 속 calendar.py 에서 다음 명령어를 각각 입력하여 주십시오.
+&nbsp;&nbsp;&nbsp;&nbsp;1.2 calendar_widget_on_desktop 속 calendar.py 에서 다음 명령어를 각각 입력하여 주십시오.
 ```powershell
 python -m pip install requests
 python -m pip install icalendar
@@ -120,8 +120,8 @@ python -m pip install winotify
 
 
 &nbsp;&nbsp;&nbsp;&nbsp;4.7 `프로그램`에 exe 파일의 경로를 입력하여 주십시오. 
-</br>&nbsp;&nbsp;&nbsp;&nbsp;4.8 `인수 추가` 에 다음과 같이 입력하여 주십시오 `"C:\Users\~ google_calendar_on_desktop.exe 를 놓은 폴더 경로 주소 ~ \google_calendar_on_desktop.exe"`
-</br>&nbsp;&nbsp;&nbsp;&nbsp;4.9 `시작 위치` 에 다음과 같이 입력하여 주십시오  `C:\Users\~ google_calendar_on_desktop.exe 를 놓은 폴더 경로 주소 ~`
+</br>&nbsp;&nbsp;&nbsp;&nbsp;4.8 `인수 추가` 에 다음과 같이 입력하여 주십시오 `"C:\Users\~ calendar_widget_on_desktop.exe 를 놓은 폴더 경로 주소 ~ \google_calendar_on_desktop.exe"`
+</br>&nbsp;&nbsp;&nbsp;&nbsp;4.9 `시작 위치` 에 다음과 같이 입력하여 주십시오  `C:\Users\~ calendar_widget_on_desktop.exe 를 놓은 폴더 경로 주소 ~`
 
 &nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/peropero1111/google_calendar_on_desktop/blob/main/img/2026-06-30%20224842.png" width="450" height="450"/> 
 <br>
