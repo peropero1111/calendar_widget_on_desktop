@@ -183,17 +183,6 @@ python -m pip install winotify
 `calendar_widget_on_desktop`의 원본 소스 코드에 적용되는 MIT License를
 대체하지 않습니다.
 
-### EXE 배포판에 대한 안내
-
-컴파일되거나 패키징된 EXE 버전에는 위 목록 외에도 Python 런타임 및
-추가적인 제3자 의존 패키지가 포함될 수 있습니다.
-
-실제 포함되는 구성요소는 Python 버전, 패키지 버전 및 빌드 환경에 따라
-달라질 수 있으며, 각 구성요소에는 각각의 라이선스와 재배포 조건이
-적용됩니다.
-
-따라서 새로운 EXE 버전을 배포할 때에는 해당 빌드에 실제로 포함된
-제3자 패키지와 라이선스를 별도로 확인하는 것을 권장합니다.
 
 ---
 
@@ -223,9 +212,6 @@ Google, Google Calendar 및 관련 명칭과 상표는 Google LLC의 상표 또�
 따라서 다음 사항을 권장합니다.
 
 - 비공개 iCal 주소를 GitHub, 공개 게시물 또는 스크린샷에 올리지 마십시오.
-- `calendar_widget_config.json`에 비공개 iCal 주소가 저장되어 있다면 해당
-  파일을 공개 저장소에 커밋하지 마십시오.
-- 가능하면 `calendar_widget_config.json`을 `.gitignore`에 추가하십시오.
 - 비공개 iCal 주소가 외부에 노출되었다고 판단되는 경우 Google Calendar
   설정에서 해당 주소를 재설정한 뒤 새 주소를 사용하십시오.
 
