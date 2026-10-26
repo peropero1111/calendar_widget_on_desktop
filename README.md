@@ -4,7 +4,6 @@
 </br>
 
 
-[exe 파일링크](https://drive.google.com/drive/folders/1IbY2NH5m0-zS1GZNa5uw_mFJOuiKGH03?usp=sharing) 로 실행할때의 사용법은 글 하단에 있습니다.
 </br>
 </br>
 사용하시기전에 다음 절차를 따라 주십시오.
@@ -19,9 +18,11 @@
 [5. 기능 소개](#5-기능-소개)
 
 ## 1. 설치
-&nbsp;&nbsp;&nbsp;&nbsp;1.1 적당한 폴더에 calendar_widget_on_desktop 속 내용물을 다운 받아 주십시오.
+&nbsp;&nbsp;&nbsp;&nbsp;1.1-1) py 로 설치하시려면 적당한 폴더에 [releases](https://github.com/peropero1111/calendar_widget_on_desktop/releases/tag/v1.0.1) 안의calendar_widget_on_desktop.zip 속 내용물을 다운 받아 주십시오.  
+  
+&nbsp;&nbsp;&nbsp;&nbsp;1.1-2) exe 로 설치하시려면 적당한 폴더에 [releases](https://github.com/peropero1111/calendar_widget_on_desktop/releases/tag/v1.0.1) 안의calendar_widget_on_desktop.exe 를 다운 받아 주십시오.  
 
-
+    
 &nbsp;&nbsp;&nbsp;&nbsp;1.2 calendar_widget_on_desktop 속 calendar.py 에서 다음 명령어를 각각 입력하여 주십시오.
 ```powershell
 python -m pip install requests
