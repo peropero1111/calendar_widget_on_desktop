@@ -23,7 +23,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;1.1-2) exe 로 설치하시려면 적당한 폴더에 [releases](https://github.com/peropero1111/calendar_widget_on_desktop/releases/tag/v1.0.1) 안의calendar_widget_on_desktop.exe 를 다운 받아 주십시오.  
 
     
-&nbsp;&nbsp;&nbsp;&nbsp;1.2 calendar_widget_on_desktop 속 calendar.py 에서 다음 명령어를 각각 입력하여 주십시오.
+&nbsp;&nbsp;&nbsp;&nbsp;1.2 calendar_widget_on_desktop.zip 속 calendar.py 에서 다음 명령어를 각각 입력하여 주십시오.
 ```powershell
 python -m pip install requests
 python -m pip install icalendar
