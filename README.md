@@ -18,9 +18,9 @@
 [5. 기능 소개](#5-기능-소개)
 
 ## 1. 설치
-&nbsp;&nbsp;&nbsp;&nbsp;1.1-1) py 로 설치하시려면 적당한 폴더에 [releases](https://github.com/peropero1111/calendar_widget_on_desktop/releases/tag/v1.0.1) 안의calendar_widget_on_desktop.zip 속 내용물을 다운 받아 주십시오.  
+&nbsp;&nbsp;&nbsp;&nbsp;1.1-1) py 로 설치하시려면 적당한 폴더에 [releases](https://github.com/peropero1111/calendar_widget_on_desktop/releases/tag/v2.0.0) 안의calendar_widget_on_desktop.zip 속 내용물을 다운 받아 주십시오.  
   
-&nbsp;&nbsp;&nbsp;&nbsp;1.1-2) exe 로 설치하시려면 적당한 폴더에 [releases](https://github.com/peropero1111/calendar_widget_on_desktop/releases/tag/v1.0.1) 안의calendar_widget_on_desktop.exe 를 다운 받아 주십시오.  
+&nbsp;&nbsp;&nbsp;&nbsp;1.1-2) exe 로 설치하시려면 적당한 폴더에 [releases](https://github.com/peropero1111/calendar_widget_on_desktop/releases/tag/v2.0.0) 안의calendar_widget_on_desktop.zip 를 다운 받아 주십시오.  
 
     
 &nbsp;&nbsp;&nbsp;&nbsp;1.2 calendar_widget_on_desktop.zip 속 calendar.py 에서 다음 명령어를 각각 입력하여 주십시오.
@@ -131,20 +131,24 @@ python -m pip install winotify
 
 ## 5. 기능 소개
 
-&nbsp;&nbsp;&nbsp;&nbsp;5.1 만약 일주일이내에 google calendar 에 등록된 일정이 있다면 그 일정은 붉게 표시 됩니다.
+&nbsp;&nbsp;&nbsp;&nbsp;5.1 *(2.0.0)추가 기능*  task 부분을 누르면 기존의 google_calendar 처럼 일정이 있는 날만 하단에 하이라이트로 표시 됩니다.
+
+&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/peropero1111/calendar_widget_on_desktop/blob/main/img/2026-11-05%20211045.png?raw=true" width="350" height="350"/><img src="https://github.com/peropero1111/calendar_widget_on_desktop/blob/main/img/2026-11-05%20211144.png?raw=true" width="350" height="350"/>  
+
+&nbsp;&nbsp;&nbsp;&nbsp;5.2 만약 일주일이내에 google calendar 에 등록된 일정이 있다면 그 일정은 붉게 표시 됩니다.
 
 &nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/peropero1111/google_calendar_on_desktop/blob/main/img/site/2026-07-11%20143401.png?raw=true" width="450" height="450"/>  
 </br>
 
 
-&nbsp;&nbsp;&nbsp;&nbsp;5.2 당일 일정이 30분 이내로 남았을 경우 우측 하단에 토스트 알립을 보내 줍니다.
+&nbsp;&nbsp;&nbsp;&nbsp;5.3 당일 일정이 30분 이내로 남았을 경우 우측 하단에 토스트 알립을 보내 줍니다.
 
 &nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/peropero1111/google_calendar_on_desktop/blob/main/img/site/2026-07-11%20112150.png?raw=true" width="450" height="450"/> 
 </br>
 </br>
 
 
-&nbsp;&nbsp;&nbsp;&nbsp;5.3 우상단의 <code>선택</code>를 누르고 민감한 일정을 고른 후 완료를 누르면 그 일정이 해제 하기 전까지 숨김처리 됩니다.
+&nbsp;&nbsp;&nbsp;&nbsp;5.4 우상단의 <code>선택</code>를 누르고 민감한 일정을 고른 후 완료를 누르면 그 일정이 해제 하기 전까지 숨김처리 됩니다.
 
 &nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/peropero1111/google_calendar_on_desktop/blob/main/img/2026-07-03%20181439.png?raw=true" width="350" height="350"/><img src="https://github.com/peropero1111/google_calendar_on_desktop/blob/main/img/2026-07-03%20181643.png?raw=true" width="350" height="350"/> 
 </br>
