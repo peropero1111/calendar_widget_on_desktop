@@ -37,6 +37,7 @@ DEFAULT_CONFIG: dict[str, Any] = {
     ],
     "timezone": "Asia/Seoul",
     "refresh_minutes": 30,
+    "view_mode": "count",  # "count"(건수형) 또는 "bar"(바형 구글 캘린더 스타일)
     "notifications": {
         "enabled": True,
         "minutes_before": 30,
@@ -83,6 +84,7 @@ class CalendarEvent:
     calendar_name: str = ""
     private: bool = False
     privacy_key: str = ""
+
 
 def deep_merge(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
     merged = dict(base)
@@ -180,6 +182,7 @@ def make_event_privacy_key(
     source = "|".join([calendar_name, uid, recurrence_id, start.isoformat(), title, location])
     return hashlib.sha256(source.encode("utf-8")).hexdigest()
 
+
 def event_from_component(component, tz, calendar_name: str) -> CalendarEvent | None:
     start_prop = component.get("DTSTART")
     if start_prop is None:
@@ -243,7 +246,7 @@ def fetch_month_events(ical_urls: list[str], month_start: date, tz) -> list[Cale
     for url in ical_urls:
         response = requests.get(
             url,
-            headers={"User-Agent": "GoogleCalendarDesktopWidget/1.0"},
+            headers={"User-Agent": "GoogleCalendarDesktopWidget/2.0"},
             timeout=25,
         )
         response.raise_for_status()
@@ -336,6 +339,11 @@ class CalendarWidgetApp:
         self.tz = make_timezone(str(self.config.get("timezone", "Asia/Seoul")))
         self.today = datetime.now(self.tz).date()
         self.view_month = first_day_of_month(self.today)
+        self.selected_day = self.today
+        self.view_mode = str(self.config.get("view_mode", "count"))
+        if self.view_mode not in ("count", "bar"):
+            self.view_mode = "count"
+
         self.events: list[CalendarEvent] = []
         self.loading = False
         self.last_error: str | None = None
@@ -387,6 +395,18 @@ class CalendarWidgetApp:
         if bool(window_config.get("frameless", True)):
             self.root.overrideredirect(True)
 
+    def mode_button_text(self) -> str:
+        return "bars" if self.view_mode == "bar" else "task"
+
+    def toggle_view_mode(self) -> None:
+        self.view_mode = "bar" if self.view_mode == "count" else "count"
+        self.config["view_mode"] = self.view_mode
+        try:
+            save_config(self.config)
+        except OSError:
+            pass
+        self.render()
+
     def build_ui(self) -> None:
         self.container = tk.Frame(
             self.root,
@@ -407,10 +427,10 @@ class CalendarWidgetApp:
             text="",
             bg=self.theme["panel"],
             fg=self.theme["text"],
-            font=(FONT_FAMILY, 13, "bold"),
+            font=(FONT_FAMILY, 12, "bold"),
             anchor="w",
         )
-        self.month_label.pack(side="left", padx=(14, 8), fill="x", expand=True)
+        self.month_label.pack(side="left", padx=(12, 4), fill="x", expand=True)
         self.month_label.bind("<ButtonPress-1>", self.start_drag)
         self.month_label.bind("<B1-Motion>", self.drag_window)
 
@@ -418,11 +438,13 @@ class CalendarWidgetApp:
             ("‹", self.previous_month, "이전 달"),
             ("오늘", self.go_today, "이번 달"),
             ("›", self.next_month, "다음 달"),
+            (self.mode_button_text(), self.toggle_view_mode, "보기 모드 변경 (tasks / bars)"),
             (self.privacy_button_text(), self.toggle_privacy, "숨길 일정 선택"),
             ("↻", self.refresh_events, "새로고침"),
             ("×", self.close, "닫기"),
         ]
         for label, command, tooltip in button_specs:
+            btn_width = 4 if label in ("오늘", "bars", "tasks") else 3
             button = tk.Button(
                 self.title_bar,
                 text=label,
@@ -433,19 +455,21 @@ class CalendarWidgetApp:
                 fg=self.theme["text"],
                 activebackground=self.theme["panel_soft"],
                 activeforeground=self.theme["accent"],
-                font=(FONT_FAMILY, 10, "bold"),
-                width=4 if label == "오늘" else 3,
+                font=(FONT_FAMILY, 9, "bold"),
+                width=btn_width,
                 cursor="hand2",
                 takefocus=False,
             )
             button.pack(side="left", padx=(0, 2), pady=7)
             if command == self.toggle_privacy:
                 self.privacy_button = button
+            elif command == self.toggle_view_mode:
+                self.mode_button = button
             button.bind("<Enter>", lambda event, text=tooltip: self.set_status(text))
             button.bind("<Leave>", lambda event: self.render_status())
 
         self.calendar_holder = tk.Frame(self.container, bg=self.theme["background"], height=212)
-        self.calendar_holder.pack(fill="x", padx=12, pady=(12, 6))
+        self.calendar_holder.pack(fill="x", padx=12, pady=(10, 6))
         self.calendar_holder.pack_propagate(False)
 
         self.status_label = tk.Label(
@@ -510,7 +534,7 @@ class CalendarWidgetApp:
         week_end = week_start + timedelta(days=6)
         return week_start <= day <= week_end
 
-    def make_day_cell(self, parent: tk.Frame, day: date, count: int, in_month: bool) -> tk.Frame:
+    def make_day_cell_count(self, parent: tk.Frame, day: date, count: int, in_month: bool) -> tk.Frame:
         today = datetime.now(self.tz).date()
         is_today = day == today
         bg = self.theme["today"] if is_today else self.theme["panel"]
@@ -567,10 +591,122 @@ class CalendarWidgetApp:
         date_label.bind("<Button-1>", lambda _event, selected_day=day: self.jump_to_day(selected_day))
         return cell
 
+    def make_day_cell_bar(
+        self,
+        parent: tk.Frame,
+        day: date,
+        events: list[CalendarEvent],
+        in_month: bool,
+    ) -> tk.Frame:
+        today = datetime.now(self.tz).date()
+        is_today = day == today
+        is_selected = in_month and (day == self.selected_day)
+
+        bg = self.theme["today"] if is_today else self.theme["panel"]
+        fg = self.theme["text"] if in_month else self.theme["muted"]
+
+        if not in_month:
+            bg = self.theme["background"]
+
+        highlight_args = {
+            "highlightthickness": 1 if is_selected else 0,
+            "highlightbackground": self.theme["accent"],
+        }
+
+        cursor = "hand2" if in_month else ""
+        cell = tk.Frame(
+            parent,
+            bg=bg,
+            bd=0,
+            relief="flat",
+            cursor=cursor,
+            **highlight_args,
+        )
+
+        top_bar = tk.Frame(cell, bg=bg)
+        top_bar.pack(anchor="nw", fill="x", padx=4, pady=(2, 1))
+
+        date_label = tk.Label(
+            top_bar,
+            text=str(day.day),
+            bg=bg,
+            fg=self.theme["accent"] if is_selected else fg,
+            font=(FONT_FAMILY, 8, "bold" if (is_today or is_selected) else "normal"),
+            anchor="nw",
+            cursor=cursor,
+        )
+        date_label.pack(side="left")
+
+        if in_month and events:
+            max_bars = 2
+            display_events = events[:max_bars]
+            overflow = len(events) - len(display_events)
+
+            for event in display_events:
+                bar_text = self.display_event_title(event)
+                if len(bar_text) > 6:
+                    bar_text = bar_text[:5] + "…"
+
+                if self.should_mask_event(event):
+                    bar_bg = "#2B3036"
+                    bar_fg = self.theme["muted"]
+                elif self.is_current_week_day(day):
+                    bar_bg = "#3E2723"
+                    bar_fg = "#FFAB91"
+                else:
+                    bar_bg = "#1A3245"
+                    bar_fg = "#80D8FF"
+
+                bar_frame = tk.Frame(cell, bg=bar_bg)
+                bar_frame.pack(fill="x", padx=2, pady=(0, 1))
+                bar_label = tk.Label(
+                    bar_frame,
+                    text=bar_text,
+                    bg=bar_bg,
+                    fg=bar_fg,
+                    font=(FONT_FAMILY, 7),
+                    anchor="w",
+                    justify="left",
+                    cursor=cursor,
+                    padx=2,
+                    pady=0,
+                )
+                bar_label.pack(fill="x")
+                bar_frame.bind("<Button-1>", lambda _e, d=day: self.select_day(d))
+                bar_label.bind("<Button-1>", lambda _e, d=day: self.select_day(d))
+
+            if overflow > 0:
+                more_label = tk.Label(
+                    cell,
+                    text=f"+{overflow}",
+                    bg=bg,
+                    fg=self.theme["muted"],
+                    font=(FONT_FAMILY, 7),
+                    anchor="e",
+                    cursor=cursor,
+                )
+                more_label.pack(anchor="se", padx=3, pady=(0, 1))
+                more_label.bind("<Button-1>", lambda _e, d=day: self.select_day(d))
+
+        if in_month:
+            cell.bind("<Button-1>", lambda _e, d=day: self.select_day(d))
+            top_bar.bind("<Button-1>", lambda _e, d=day: self.select_day(d))
+            date_label.bind("<Button-1>", lambda _e, d=day: self.select_day(d))
+
+        cell.grid(sticky="nsew", padx=1, pady=1)
+        return cell
+
     def render(self) -> None:
         self.month_label.configure(text=f"{self.view_month.year}년 {self.view_month.month}월")
         if hasattr(self, "privacy_button"):
             self.privacy_button.configure(text=self.privacy_button_text())
+        if hasattr(self, "mode_button"):
+            self.mode_button.configure(text=self.mode_button_text())
+
+        # 바형일 때는 바가 들어갈 수 있도록 그리드 높이를 248로 조정
+        grid_height = 248 if self.view_mode == "bar" else 212
+        self.calendar_holder.configure(height=grid_height)
+
         by_day = build_events_by_day(self.events, self.view_month, self.tz)
         self.render_calendar_grid(by_day)
         self.render_agenda(by_day)
@@ -602,11 +738,69 @@ class CalendarWidgetApp:
         for row_index, week in enumerate(weeks, start=1):
             for col_index, day in enumerate(week):
                 in_month = day.month == self.view_month.month
-                count = len(by_day.get(day, [])) if in_month else 0
-                cell = self.make_day_cell(self.calendar_holder, day, count, in_month)
+                day_events = by_day.get(day, []) if in_month else []
+
+                if self.view_mode == "bar":
+                    cell = self.make_day_cell_bar(self.calendar_holder, day, day_events, in_month)
+                else:
+                    cell = self.make_day_cell_count(self.calendar_holder, day, len(day_events), in_month)
+
                 cell.grid(row=row_index, column=col_index)
 
     def render_agenda(self, by_day: dict[date, list[CalendarEvent]]) -> None:
+        if self.view_mode == "bar":
+            self.render_agenda_single_day(by_day)
+        else:
+            self.render_agenda_all_month(by_day)
+
+    def render_agenda_single_day(self, by_day: dict[date, list[CalendarEvent]]) -> None:
+        self.agenda_text.configure(state="normal")
+        self.agenda_text.delete("1.0", "end")
+        self.agenda_event_tags: dict[str, str] = {}
+
+        if self.config_error:
+            self.agenda_text.insert("end", self.config_error + "\n", "error")
+            self.agenda_text.configure(state="disabled")
+            return
+
+        if not valid_ical_urls(self.config.get("ical_urls", [])):
+            self.insert_setup_text()
+            self.agenda_text.configure(state="disabled")
+            return
+
+        target_day = self.selected_day
+        if target_day.month != self.view_month.month:
+            target_day = first_day_of_month(self.view_month)
+            self.selected_day = target_day
+
+        self.agenda_text.insert("end", f"{format_date_heading(target_day)} 상세 일정\n", "date")
+
+        day_events = by_day.get(target_day, [])
+        if day_events:
+            for event in day_events:
+                time_label = format_event_time(event, target_day)
+                event_tag = self.register_agenda_event_tag(event)
+                click_tags = (event_tag, "event_click")
+                week_tags = ("week_event",) if self.is_current_week_day(target_day) else ()
+                self.agenda_text.insert("end", f"  {time_label:<11}", ("time", *week_tags, *click_tags))
+                title = self.display_event_title(event)
+                base_title_tags = ("private",) if self.should_mask_event(event) else ()
+                title_tags = (*base_title_tags, *week_tags, *click_tags)
+                self.agenda_text.insert("end", title + "\n", title_tags)
+                if event.location and not self.should_mask_event(event):
+                    self.agenda_text.insert("end", f"    {event.location}\n", ("muted", *click_tags))
+            self.agenda_text.insert("end", "\n")
+        else:
+            self.agenda_text.insert("end", "등록된 일정이 없습니다.\n\n", "muted")
+            self.agenda_text.insert("end", "날짜 셀을 클릭하면 해당 일자의 상세 일정이 표시됩니다.\n", "muted")
+
+        if self.last_error:
+            self.agenda_text.insert("end", "\n최근 새로고침 실패:\n", "error")
+            self.agenda_text.insert("end", self.last_error + "\n", "muted")
+
+        self.agenda_text.configure(state="disabled")
+
+    def render_agenda_all_month(self, by_day: dict[date, list[CalendarEvent]]) -> None:
         self.agenda_text.configure(state="normal")
         self.agenda_text.delete("1.0", "end")
         self.agenda_event_tags: dict[str, str] = {}
@@ -747,10 +941,19 @@ class CalendarWidgetApp:
         total = len(self.events)
         refresh_minutes = int(self.config.get("refresh_minutes", 30))
         hidden_count = len(self.hidden_event_keys)
+        mode_label = "bars" if self.view_mode == "bar" else "tasks"
+
         if self.privacy_select_mode:
             self.set_status(f"숨김 선택 중 | 숨김 {hidden_count}개 | 일정을 클릭하세요")
         else:
-            self.set_status(f"{total}개 일정 표시 | 숨김 {hidden_count}개 | {refresh_minutes}분마다 새로고침")
+            if self.view_mode == "bar":
+                self.set_status(
+                    f"{self.selected_day.month}월 {self.selected_day.day}일 선택 | 숨김 {hidden_count}개 | {mode_label} | {refresh_minutes}분마다 새로고침"
+                )
+            else:
+                self.set_status(
+                    f"{total}개 일정 표시 | 숨김 {hidden_count}개 | {mode_label} | {refresh_minutes}분마다 새로고침"
+                )
 
     def set_status(self, text: str) -> None:
         self.status_label.configure(text=text)
@@ -895,23 +1098,30 @@ class CalendarWidgetApp:
         if bool(self.config.get("follow_current_month", True)) and current_month != self.view_month:
             self.today = today
             self.view_month = current_month
+            self.selected_day = today
             self.refresh_events()
         self.schedule_month_rollover_check()
 
     def previous_month(self) -> None:
         self.view_month = add_months(self.view_month, -1)
+        if self.selected_day.month != self.view_month.month:
+            self.selected_day = self.view_month
         self.events = []
         self.refresh_events()
         self.render()
 
     def next_month(self) -> None:
         self.view_month = add_months(self.view_month, 1)
+        if self.selected_day.month != self.view_month.month:
+            self.selected_day = self.view_month
         self.events = []
         self.refresh_events()
         self.render()
 
     def go_today(self) -> None:
-        self.view_month = first_day_of_month(datetime.now(self.tz).date())
+        self.today = datetime.now(self.tz).date()
+        self.selected_day = self.today
+        self.view_month = first_day_of_month(self.today)
         self.events = []
         self.refresh_events()
         self.render()
@@ -922,6 +1132,12 @@ class CalendarWidgetApp:
         mark = mark_name_for_day(day)
         if mark in self.agenda_text.mark_names():
             self.agenda_text.see(mark)
+
+    def select_day(self, day: date) -> None:
+        if day.month != self.view_month.month:
+            return
+        self.selected_day = day
+        self.render()
 
     def start_drag(self, event) -> None:
         self.drag_offset = (event.x_root - self.root.winfo_x(), event.y_root - self.root.winfo_y())
