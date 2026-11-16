@@ -9,7 +9,7 @@ from pathlib import Path
 
 
 APP_DIR = Path(__file__).resolve().parent
-APP_SCRIPT = APP_DIR / "calendar.py"
+APP_SCRIPT = APP_DIR / "calendar_widget.py"
 LOG_PATH = APP_DIR / "run_widget_launcher.log"
 
 
