@@ -18,9 +18,9 @@
 [5. 기능 소개](#5-기능-소개)
 
 ## 1. 설치
-&nbsp;&nbsp;&nbsp;&nbsp;1.1-1) py 로 설치하시려면 적당한 폴더에 [releases](https://github.com/peropero1111/calendar_widget_on_desktop/releases/tag/v2.0.0) 안의calendar_widget_on_desktop.zip 속 내용물을 다운 받아 주십시오.  
+&nbsp;&nbsp;&nbsp;&nbsp;1.1-1) py 로 설치하시려면 적당한 폴더에 [releases](https://github.com/peropero1111/calendar_widget_on_desktop/releases/tag/v2.1.0) 안의calendar_widget_on_desktop.zip 속 내용물을 다운 받아 주십시오.  
   
-&nbsp;&nbsp;&nbsp;&nbsp;1.1-2) exe 로 설치하시려면 적당한 폴더에 [releases](https://github.com/peropero1111/calendar_widget_on_desktop/releases/tag/v2.0.0) 안의calendar_widget_on_desktop.zip 를 다운 받아 주십시오.  
+&nbsp;&nbsp;&nbsp;&nbsp;1.1-2) exe 로 설치하시려면 적당한 폴더에 [releases](https://github.com/peropero1111/calendar_widget_on_desktop/releases/tag/v2.1.0) 안의calendar_widget_on_desktop.zip 를 다운 받아 주십시오.  
 
     
 &nbsp;&nbsp;&nbsp;&nbsp;1.2 calendar_widget_on_desktop.zip 속 calendar.py 에서 다음 명령어를 각각 입력하여 주십시오.
@@ -87,6 +87,15 @@ python -m pip install winotify
 &nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/peropero1111/google_calendar_on_desktop/blob/main/img/2026-06-30%20212838.png" width="450" height="450"/> 
 <br>
 </br>
+
+
+
+> [!CAUTION]
+> 만약 .py 로 작업 스케쥴러에 등록 하였음에도 pc가 켜질때 마다 같이 켜지지 않는 경우 동봉한 ``run_widget.vbs`` 의 내부 코드를
+> </br> 자신의 pc에 맞게 변경한 후 .py 와 같은 방식으로 작업 스케쥴러에 등록하시면 정상작동 합니다.
+
+</br>
+
 
 ## 4. 작업스케쥴러 등록 (선택사항) (exe 버젼) 
 
